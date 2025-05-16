@@ -30,6 +30,3 @@ Route::get('/user/{id}/roles', [BlogController::class, 'roles'])->name('blog.rol
 Route::get('/users-with-profiles', [BlogController::class, 'withProfiles'])->name('blog.withProfiles');
 Route::get('/top-articles', [BlogController::class, 'topArticles'])->name('blog.topArticles');
 Route::get('/latest-articles', [BlogController::class, 'latest'])->name('blog.latest');
-// Add these POST routes
-Route::post('/blog/create/{userId}', [BlogController::class, 'createPost'])->name('blog.create');
-Route::post('/blog/{postId}/tags', [BlogController::class, 'addTags'])->name('blog.addTags');
