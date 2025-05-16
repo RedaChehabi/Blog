@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\PostController;
 
 
 //Route::get('/', function () {
@@ -22,11 +24,16 @@ use App\Http\Controllers\BlogController;
 // Les 5 derniers articles avec catégorie, tags et commentaires
 
 // Blog routes
-Route::get('/', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
-Route::get('/blog/{id}/comments', [BlogController::class, 'comments'])->name('blog.comments');
-Route::get('/blog/{id}/tags', [BlogController::class, 'tags'])->name('blog.tags');
-Route::get('/user/{id}/roles', [BlogController::class, 'roles'])->name('blog.roles');
-Route::get('/users-with-profiles', [BlogController::class, 'withProfiles'])->name('blog.withProfiles');
-Route::get('/top-articles', [BlogController::class, 'topArticles'])->name('blog.topArticles');
-Route::get('/latest-articles', [BlogController::class, 'latest'])->name('blog.latest');
+//Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+//Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+//Route::get('/blog/{id}/comments', [BlogController::class, 'comments'])->name('blog.comments');
+//Route::get('/blog/{id}/tags', [BlogController::class, 'tags'])->name('blog.tags');
+//Route::get('/user/{id}/roles', [BlogController::class, 'roles'])->name('blog.roles');
+//Route::get('/users-with-profiles', [BlogController::class, 'withProfiles'])->name('blog.withProfiles');
+//Route::get('/top-articles', [BlogController::class, 'topArticles'])->name('blog.topArticles');
+//Route::get('/latest-articles', [BlogController::class, 'latest'])->name('blog.latest');
+
+// Tag routes
+Route::resource('tags', TagController::class);
+// Post routes
+Route::resource('posts', PostController::class);
