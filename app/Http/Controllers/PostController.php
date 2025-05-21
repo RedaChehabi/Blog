@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\User;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -28,18 +30,34 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = \App\Models\Category::all();
-        $users = \App\Models\User::all();
-        return view('posts.create', compact('categories', 'users'));
+        $categories = Category::all();
+        $users = User::all();
+        $tags = Tag::all();
+        return view('posts.create', compact('categories', 'users', 'tags'));
 
     }
+
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'user_id' => 'required|exists:users,id',
+            'tags' => 'array',
+        ]);
+
+        //Post::create($request->all());
+        $post = Post::create($validated);
+        $post->tags()->attach($validated['tags']);
+
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
 
     /**
@@ -47,7 +65,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->findOrFail(['user', 'category', 'comments']);
+        $post->findOrFail(id: ['user', 'category', 'comments']);
         return view('posts.show', compact('post'));
     }
 
@@ -56,8 +74,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = \App\Models\Category::all();
-        $users = \App\Models\User::all();
+        $categories = Category::all();
+        $users = User::all();
         return view('posts.edit', compact('post', 'categories', 'users'));
     }
 
@@ -66,7 +84,16 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $post->update($request->all());
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -74,6 +101,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }

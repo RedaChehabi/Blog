@@ -35,6 +35,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255|unique:tags',
         ]);
@@ -51,7 +52,8 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        //$tag = Tag::findOrFail($id)
+        return view('tags.show', compact('tag'));
     }
 
     /**
@@ -67,7 +69,15 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name,',
+        ]);
+
+        $tag->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('tags.index')->with('success', 'Tag updated successfully.');
     }
 
     /**

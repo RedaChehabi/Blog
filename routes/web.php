@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Post2Controller;
 
 
 //Route::get('/', function () {
@@ -36,4 +37,6 @@ use App\Http\Controllers\PostController;
 // Tag routes
 Route::resource('tags', TagController::class);
 // Post routes
-Route::resource('posts', PostController::class);
+//Route::resource('posts', PostController::class);
+
+Route::resource('posts', Post2Controller::class);

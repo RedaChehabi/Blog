@@ -14,13 +14,25 @@
     <div class="container mt-5">
         <h1 class="mb-4">La liste des Posts</h1>
 
-        <a href="{{ route('posts.create') }}" class="btn btn-success mb-3">Ajouter Post</a>
 
-        <form class="row g-3 mb-4">
-            <div class="col-auto">
-                <input type="text" name="search" id="search" class="form-control" placeholder="Rechercher un post">
+        <form class="row g-3 mb-4 align-items-center filter-form" method="GET" action="{{ route('posts.index') }}">
+            <div class="col-md-2 col-sm-12 mb-2 mb-md-0">
+                <a href="{{ route('posts.create') }}" class="btn btn-success mb-3">Ajouter Post</a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-3 col-sm-12 mb-2 mb-md-0">
+                <select name="category_id" id="category_id" class="form-select">
+                    <option value="">Select Category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-12 mb-2 mb-md-0">
+                <input type="text" name="search" id="search" class="form-control" value="{{ request('search') }}">
+            </div>
+            <div class="col-md-2 col-sm-12 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary">Rechercher</button>
             </div>
         </form>
@@ -29,7 +41,10 @@
             <thead class="table-light">
                 <tr>
                     <th>id</th>
-                    <th>name</th>
+                    <th>title</th>
+                    <th>category</th>
+                    <th>user</th>
+                    <th>show</th>
                     <th>edit</th>
                     <th>delete</th>
                 </tr>
@@ -38,9 +53,18 @@
                 @foreach ($posts as $post)
                     <tr>
                         <td>
-                            <a href="{{ route('posts.show', ['post' => $post]) }}">{{ $post->id }}</a>
+                            {{ $post->id }}
                         </td>
-                        <td>{{ $post->name ?? $post->title }}</td>
+                        <td>{{ $post->title }}</td>
+                        <td>
+                            {{ $post->category->name }}
+                        </td>
+                        <td>
+                            {{ $post->user->name }}
+                        </td>
+                        <td>
+                            <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn btn-success btn-sm">Show</a>
+                        </td>
                         <td>
                             <a href="{{ route('posts.edit', ['post' => $post]) }}" class="btn btn-primary btn-sm">Edit</a>
                         </td>
