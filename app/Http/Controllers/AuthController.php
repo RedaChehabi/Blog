@@ -15,6 +15,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+
         if (auth()->attempt($credentials)) {
             return redirect()->intended('posts')->with('success', 'Login successful');
         }

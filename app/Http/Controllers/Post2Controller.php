@@ -114,6 +114,8 @@ class Post2Controller extends Controller
     {
         $post->tags()->detach();
         $post->delete();
-        return response()->json(['message' => 'Post deleted successfully']);
+
+        return redirect()->route('posts.index')
+            ->with('success', 'Post deleted successfully!');
     }
 }
